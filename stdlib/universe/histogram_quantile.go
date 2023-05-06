@@ -274,6 +274,11 @@ func (t *histogramQuantileTransformation) computeQuantile(cdf []bucket) (float64
 	// Find rank index and check counts are monotonic
 	prevCount := 0.0
 	totalCount := cdf[len(cdf)-1].count
+
+	if totalCount == 0 {
+		return 0, false, nil
+	}
+
 	rank := t.spec.Quantile * totalCount
 	rankIdx := -1
 	for i, b := range cdf {
